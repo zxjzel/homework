@@ -100,15 +100,32 @@ def process_player_turn(player_name, distance_apart):
     # manner.
     if difference > 1:
         logger.info('You went ' + str(difference) + ' yards too far!')
+        print ('You went ' + str(difference) + ' yards too far!')
 
     elif difference < -1:
         logger.info("You were " + str(difference * -1) + ' yards too short!')
+        print ("You were " + str(difference * -1) + ' yards too short!')
+
     else:
         logger.info('Hit!' + str(player_name) + 'wins!')
+        print ('Hit!' + str(player_name) + 'wins!')
         return True
 
     print()
     return False
+
+
+def main_1():
+    """ Main program. """
+    logger.info('---------------------Program is start-------------------------')
+    print_instructions()
+    global player_names
+    player_names = get_player_names()
+    logger.info('This is player_names' + str(player_names))
+    global distance_apart
+    distance_apart = random.randrange(50, 150) # 从（50，150）间随机返回一个值
+    logger.info(distance_apart)
+
 
 def main_2():
     # Keep looking until someone wins
@@ -122,18 +139,6 @@ def main_2():
             if done:
                 break
     logger.info('----------------------------end-------------------------------')
-    
-    
-def main_1():
-    """ Main program. """
-    logger.info('---------------------Program is start-------------------------')
-    print_instructions()
-    global player_names
-    player_names = get_player_names()
-    logger.info('This is player_names' + str(player_names))
-    global distance_apart
-    distance_apart = random.randrange(50, 150) # 从（50，150）间随机返回一个值
-    logger.info(distance_apart)
 
 
 if __name__ == "__main__":
