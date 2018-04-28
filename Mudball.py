@@ -28,10 +28,11 @@ file_handler = logging.FileHandler('Mud_log.txt')
 file_handler.setFormatter(formatter)
 file_handler.setLevel(logging.INFO)
 console_handler = logging.StreamHandler()
-console_handler.formatter = formatter
+console_handler.setFormatter(formatter)
 console_handler.setLevel(logging.ERROR)
 logger.addHandler(file_handler)
 logger.addHandler(console_handler)
+logger.setLevel(logging.INFO)
 
 
 def print_instructions():
@@ -64,10 +65,8 @@ def get_user_input(name):
     # isn't a valid number.
     psi = float(input(name + " charge the gun with how many psi? "))
     logger.info(name + " charge the gun with how many psi? " + str(psi))
-    print()
     angle = float(input(name + " move the gun at what angle? "))
     logger.info(name + " move the gun at what angle? " + str(angle))
-    print()
     return psi, angle
 
 
