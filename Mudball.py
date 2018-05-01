@@ -17,9 +17,9 @@ import logging
 # 导入模块
 
 
-class inputException(Exception):
-    def __init__(self,err = 'InputError'):
-        print(err)
+class inputError(ValueError):
+    def raise_intutError(self):
+        print('inputError : Type must be int')
 
 
 logger = logging.getLogger('logger')
@@ -145,5 +145,8 @@ if __name__ == "__main__":
         main_1()
         main_2()
     except :
+        IE = inputError()
+        IE.raise_intutError()
         logger.error('Type must be int')
+        print()
         main_2()
