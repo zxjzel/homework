@@ -150,4 +150,3 @@ if __name__ == "__main__":
         logger.error('Type must be int')
         print()
         main_2()
-        
