@@ -63,11 +63,22 @@ def get_user_input(name):
     # Later on in the 'exceptions' chapter, we will learn how to modify
     # this code to not crash the game if the user types in something that
     # isn't a valid number.
-    psi = float(input(name + " charge the gun with how many psi? "))
-    logger.info(name + " charge the gun with how many psi? " + str(psi))
-    angle = float(input(name + " move the gun at what angle? "))
-    logger.info(name + " move the gun at what angle? " + str(angle))
-    return psi, angle
+    global psi
+    global angle
+    while True:
+        A = False
+        try:
+            psi = float(input(name + " charge the gun with how many psi? "))
+            angle = float(input(name + " move the gun at what angle? "))
+            logger.info(name + " charge the gun with how many psi? " + str(psi))
+            logger.info(name + " move the gun at what angle? " + str(angle))
+            A = True
+        except:
+            IE = inputError()
+            IE.raise_intutError()
+            logger.error('inputError : Type must be int')
+        if A:
+            return psi, angle
 
 
 def get_player_names():
@@ -114,7 +125,7 @@ def process_player_turn(player_name, distance_apart):
     return False
 
 
-def main_1():
+def main():
     """ Main program. """
     logger.info('---------------------Program is start-------------------------')
     print_instructions()
@@ -124,9 +135,6 @@ def main_1():
     global distance_apart
     distance_apart = random.randrange(50, 150) # 从（50，150）间随机返回一个值
     logger.info('distance_apart is ' + str(distance_apart))
-
-
-def main_2():
     # Keep looking until someone wins
     done = False
     while not done:
@@ -141,12 +149,4 @@ def main_2():
 
 
 if __name__ == "__main__":
-    try:
-        main_1()
-        main_2()
-    except (ValueError):
-        IE = inputError()
-        IE.raise_intutError()
-        logger.error('inputError : Type must be int')
-        print()
-        main_2()
+    main()
