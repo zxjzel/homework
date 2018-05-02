@@ -77,6 +77,7 @@ def get_user_input(name):
             IE = inputError()
             IE.raise_intutError()
             logger.error('inputError : Type must be int')
+            print()
         if A:
             return psi, angle
 
@@ -129,10 +130,8 @@ def main():
     """ Main program. """
     logger.info('---------------------Program is start-------------------------')
     print_instructions()
-    global player_names
     player_names = get_player_names()
     logger.info('This is player_names' + str(player_names))
-    global distance_apart
     distance_apart = random.randrange(50, 150) # 从（50，150）间随机返回一个值
     logger.info('distance_apart is ' + str(distance_apart))
     # Keep looking until someone wins
