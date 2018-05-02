@@ -123,7 +123,7 @@ def main_1():
     logger.info('This is player_names' + str(player_names))
     global distance_apart
     distance_apart = random.randrange(50, 150) # 从（50，150）间随机返回一个值
-    logger.info(distance_apart)
+    logger.info('distance_apart is ' + str(distance_apart))
 
 
 def main_2():
@@ -144,9 +144,9 @@ if __name__ == "__main__":
     try:
         main_1()
         main_2()
-    except :
+    except (ValueError):
         IE = inputError()
         IE.raise_intutError()
-        logger.error('Type must be int')
+        logger.error('inputError : Type must be int')
         print()
         main_2()
