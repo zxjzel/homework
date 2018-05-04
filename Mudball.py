@@ -17,7 +17,7 @@ import logging
 # 导入模块
 
 
-class inputError(ValueError):
+class inputError(Exception):
     def raise_intutError(self):
         print('inputError : Type must be int')
 
@@ -27,11 +27,7 @@ formatter = logging.Formatter('%(asctime)s %(levelname)-8s: %(message)s')
 file_handler = logging.FileHandler('Mud_log.txt')
 file_handler.setFormatter(formatter)
 file_handler.setLevel(logging.INFO)
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
-console_handler.setLevel(logging.ERROR)
 logger.addHandler(file_handler)
-logger.addHandler(console_handler)
 logger.setLevel(logging.INFO)
 
 
@@ -65,17 +61,22 @@ def get_user_input(name):
     # isn't a valid number.
     global psi
     global angle
+    global str_psi
     while True:
         A = False
         try:
-            psi = float(input(name + " charge the gun with how many psi? "))
-            angle = float(input(name + " move the gun at what angle? "))
-            logger.info(name + " charge the gun with how many psi? " + str(psi))
-            logger.info(name + " move the gun at what angle? " + str(angle))
+            str_psi = input(name + " charge the gun with how many psi? ")
+            psi = float(str_psi)
+            str_angle = input(name + " move the gun at what angle? ")
+            angle = float(str_angle)
+            logger.info(name + " charge the gun with how many psi? " + str_psi)
+            logger.info(name + " move the gun at what angle? " + str_angle)
             A = True
-        except:
+        except(ValueError):
             IE = inputError()
             IE.raise_intutError()
+            logger.error(name + " charge the gun with how many psi? " + str_psi)
+            print()
             logger.error('inputError : Type must be int')
             print()
         if A:
