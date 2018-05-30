@@ -4,7 +4,7 @@ import logging
 
 
 """
-加强版：
+改良版：
         新建了一个装备抽象类；
         增加了装备，有的装备带有特殊属性
         增加了一个Boss，带有重击技能，
@@ -178,12 +178,12 @@ class Monster(Fighter):
 
 
 class B_F_Sword(Equipment):
-    """饮血剑"""
+    """暴风大剑"""
 
     __slots__ = ('_name', '_attributes')
 
     def __init__(self):
-        self._name = 'B_F_Sword'
+        self._name = '暴风大剑'
         self._attributes = 10
 
     def specail_attributes(self,other):
@@ -196,12 +196,13 @@ class bloodthirster(Equipment):
     __slots__ = ('_name', '_attributes')
 
     def __init__(self):
-        self._name = 'bloodthirster'
+        self._name = '饮血剑'
         self._attributes = 40
 
     def specail_attributes(self,other):
         restore = randint(0, 40) * 0.3
         other._hp += restore
+        print('%s触发了装备的特殊技能.' % (other._name))
         print('{}恢复了{}hp'.format(other._name, restore))
 
 
@@ -211,7 +212,7 @@ class abyssal_scepter(Equipment):
     __slots__ = ('_name', '_attributes')
 
     def __init__(self):
-        self._name = 'abyssal_scepter'
+        self._name = '虚空之杖'
         self._attributes = 0.2
 
     def specail_attributes(self, other, another):
@@ -224,11 +225,12 @@ class archangels_staff(Equipment):
     __slots__ = ('_name', '_attributes')
 
     def __init__(self):
-        self._name = 'archangels_staff'
+        self._name = '大天使之杖'
         self._attributes = 0.3
 
     def specail_attributes(self, other, another):
         another._hp = 0
+        print('%s触发了装备的特殊技能.' % (other._name))
         print('{}使用大天使之杖秒杀了{}'.format(other._name, another._name))
 
 
@@ -303,12 +305,11 @@ def main():
                 print('%s使用普通攻击打了%s.' % (u.name, m.name))
                 print('%s的魔法值恢复了%d点.' % (u.name, u.resume()))
         else:
-            print('%s触发了装备的特殊技能.' % (u._name))
             u._eq.specail_attributes(u, m)
         if m.alive > 0 and m in ms:  # 如果选中的小怪兽没有死就回击奥特曼
             print('%s回击了%s.' % (m.name, u.name))
             m.attack(u)
-        else:
+        elif b.hp > 0:
             skill = randint(1, 10)
             if skill <= 5:
                 print('%s普通攻击攻击打了%s.' % (b.name, u.name))
@@ -317,7 +318,6 @@ def main():
                 print('%s举起武器重击了%s.' % (b.name, u.name))
                 b.heavy_attack(u)
             else:
-                print('%s触发了装备的特殊技能.' % (b._name))
                 b.attack(u)
                 b._eq.specail_attributes(b)
 
