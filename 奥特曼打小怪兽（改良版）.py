@@ -6,11 +6,21 @@ import logging
 """
 改良版：
         新建了一个装备抽象类；
-        增加了装备，有的装备带有特殊属性
-        增加了一个Boss，带有重击技能，
+        增加了装备，有的装备带有特殊属性，
+        增加了一个Boss，带有重击技能。
         游戏开始时给奥特曼和大怪兽分别随机选择一件装备
         奥特曼先与小怪兽战斗，等到小怪兽死后再与Boss决斗
+        用logging日志记录每次的运行结果
 """
+
+
+logger = logging.getLogger('logger')
+formatter = logging.Formatter('%(asctime)s %(levelname)-8s: %(message)s')
+file_handler = logging.FileHandler('奥特曼打小怪兽_log.txt')
+file_handler.setFormatter(formatter)
+file_handler.setLevel(logging.INFO)
+logger.addHandler(file_handler)
+logger.setLevel(logging.INFO)
 
 
 class Fighter(object, metaclass=ABCMeta):
@@ -158,10 +168,9 @@ class Boss(Fighter):
             other._hp -= randint(30, 40)
 
     def __str__(self):
-        if __name__ == '__main__':
-            return '~~~%s大怪兽~~~\n' % self._name + \
-                '生命值: %d\n' % self._hp + \
-                '装备了：{}\n' .format(self._eq._name)
+        return '~~~%s大怪兽~~~\n' % self._name + \
+            '生命值: %d\n' % self._hp + \
+            '装备了：{}\n' .format(self._eq._name)
 
 
 class Monster(Fighter):
@@ -203,7 +212,9 @@ class bloodthirster(Equipment):
         restore = randint(0, 40) * 0.3
         other._hp += restore
         print('%s触发了装备的特殊技能.' % (other._name))
+        logger.info('%s触发了装备的特殊技能.' % (other._name))
         print('{}恢复了{}hp'.format(other._name, restore))
+        logger.info('{}恢复了{}hp'.format(other._name, restore))
 
 
 class abyssal_scepter(Equipment):
@@ -231,7 +242,9 @@ class archangels_staff(Equipment):
     def specail_attributes(self, other, another):
         another._hp = 0
         print('%s触发了装备的特殊技能.' % (other._name))
+        logger.info('%s触发了装备的特殊技能.' % (other._name))
         print('{}使用大天使之杖秒杀了{}'.format(other._name, another._name))
+        logger.info('{}使用大天使之杖秒杀了{}'.format(other._name, another._name))
 
 
 def is_any_alive(monsters):
@@ -255,9 +268,12 @@ def select_alive_one(monsters):
 def display_info(ultraman, monsters, boss):
     """显示奥特曼和小怪兽的信息"""
     print(ultraman)
+    logger.info(ultraman)
     for monster in monsters:
         print(monster, end='')
+        logger.info(monster)
     print(boss)
+    logger.info(boss)
 
 
 def choose_equipments(eqs):
@@ -284,6 +300,7 @@ def main():
     fight_round = 1
     while u.alive and is_any_alive(ms1):
         print('========第%02d回合========' % fight_round)
+        logger.info('========第%02d回合========' % fight_round)
         if is_any_alive(ms):
             m = select_alive_one(ms)  # 选中一只小怪兽
         else:
@@ -291,31 +308,41 @@ def main():
         skill = randint(1, 11)   # 通过随机数选择使用哪种技能
         if skill <= 6:  # 60%的概率使用普通攻击
             print('%s使用普通攻击打了%s.' % (u.name, m.name))
+            logger.info('%s使用普通攻击打了%s.' % (u.name, m.name))
             u.attack(m)
             print('%s的魔法值恢复了%d点.' % (u.name, u.resume()))
+            logger.info('%s的魔法值恢复了%d点.' % (u.name, u.resume()))
         elif skill <= 9:  # 30%的概率使用魔法攻击(可能因魔法值不足而失败)
             if u.magic_attack(ms):
                 print('%s使用了魔法攻击.' % u.name)
+                logger.info('%s使用了魔法攻击.' % u.name)
             else:
                 print('%s使用魔法失败.' % u.name)
+                logger.info('%s使用魔法失败.' % u.name)
         elif skill == 10:  # 10%的概率使用究极必杀技(如果魔法值不足则使用普通攻击)
             if u.huge_attack(m):
                 print('%s使用究极必杀技虐了%s.' % (u.name, m.name))
+                logger.info('%s使用究极必杀技虐了%s.' % (u.name, m.name))
             else:
                 print('%s使用普通攻击打了%s.' % (u.name, m.name))
+                logger.info('%s使用普通攻击打了%s.' % (u.name, m.name))
                 print('%s的魔法值恢复了%d点.' % (u.name, u.resume()))
+                logger.info('%s的魔法值恢复了%d点.' % (u.name, u.resume()))
         else:
             u._eq.specail_attributes(u, m)
         if m.alive > 0 and m in ms:  # 如果选中的小怪兽没有死就回击奥特曼
             print('%s回击了%s.' % (m.name, u.name))
+            logger.info('%s回击了%s.' % (m.name, u.name))
             m.attack(u)
         elif b.hp > 0:
             skill = randint(1, 10)
             if skill <= 5:
                 print('%s普通攻击攻击打了%s.' % (b.name, u.name))
+                logger.info('%s普通攻击攻击打了%s.' % (b.name, u.name))
                 b.attack(u)
             elif 5 < skill <= 8:
                 print('%s举起武器重击了%s.' % (b.name, u.name))
+                logger.info('%s举起武器重击了%s.' % (b.name, u.name))
                 b.heavy_attack(u)
             else:
                 b.attack(u)
@@ -324,10 +351,13 @@ def main():
         display_info(u, ms, b)  # 每个回合结束后显示奥特曼和小怪兽的信息
         fight_round += 1
     print('\n========战斗结束!========\n')
+    logger.info('========战斗结束!========')
     if u.alive > 0:
         print('%s奥特曼胜利!' % u.name)
+        logger.info('%s奥特曼胜利!' % u.name)
     else:
         print('怪兽们胜利!')
+        logger.info('怪兽们胜利!')
 
 
 if __name__ == '__main__':
