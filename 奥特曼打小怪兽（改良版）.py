@@ -16,7 +16,7 @@ import logging
 
 logger = logging.getLogger('logger')
 formatter = logging.Formatter('%(asctime)s %(levelname)-8s: %(message)s')
-file_handler = logging.FileHandler('奥特曼打小怪兽_log.txt')
+file_handler = logging.FileHandler('奥特曼打小怪兽_log.txt',encoding = 'utf-8')
 file_handler.setFormatter(formatter)
 file_handler.setLevel(logging.INFO)
 logger.addHandler(file_handler)
