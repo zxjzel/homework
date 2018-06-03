@@ -268,12 +268,17 @@ def select_alive_one(monsters):
 def display_info(ultraman, monsters, boss):
     """显示奥特曼和小怪兽的信息"""
     print(ultraman)
-    logger.info(ultraman)
+    logger.info('~~~%s奥特曼~~~ ' % ultraman._name)
+    logger.info(' ' * 3 + '生命值: %d' % ultraman._hp)
+    logger.info(' ' * 3 + '魔法值: %d' % ultraman._mp)
     for monster in monsters:
         print(monster, end='')
-        logger.info(monster)
+        logger.info('~~~%s小怪兽~~~' % monster._name )
+        logger.info(' ' * 3 + '生命值: %d' % monster._hp)
     print(boss)
-    logger.info(boss)
+    logger.info('~~~%s大怪兽~~~' % boss._name)
+    logger.info(' ' * 3 + '生命值: %d' % boss._hp)
+    logger.info(' ' * 3 + '装备了：{}' .format(boss._eq._name))
 
 
 def choose_equipments(eqs):
@@ -358,6 +363,7 @@ def main():
     else:
         print('怪兽们胜利!')
         logger.info('怪兽们胜利!')
+    logger.info('\n' * 5)
 
 
 if __name__ == '__main__':
